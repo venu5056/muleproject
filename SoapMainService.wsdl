@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://soapMain.capg.com"
+	xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://soapMain.capg.com"
+	xmlns:intf="http://soapMain.capg.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<!--WSDL created by Apache Axis version: 1.4 Built on Apr 22, 2006 (06:55:48 
+		PDT) -->
+	<wsdl:types>
+		<schema elementFormDefault="qualified" targetNamespace="http://soapMain.capg.com"
+			xmlns="http://www.w3.org/2001/XMLSchema">
+			<element name="getDetails">
+				<complexType>
+					<sequence>
+						<element name="body" type="impl:InputBody" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="getDetailsHeader">
+				<complexType>
+					<sequence>
+						<element name="getDetailsHeader" type="impl:InputHeader" />
+					</sequence>
+				</complexType>
+			</element>
+			<complexType name="InputBody">
+				<sequence>
+					<element name="id" type="xsd:int" />
+					<element name="input" nillable="true" type="xsd:string" />
+				</sequence>
+			</complexType>
+			<complexType name="InputHeader">
+				<sequence>
+					<element name="date" nillable="true" type="xsd:string" />
+					<element name="name" nillable="true" type="xsd:string" />
+					<element name="CallbackURIs" nillable="true" type="xsd:string" />
+
+				</sequence>
+			</complexType>
+			<element name="getDetailsResponse">
+				<complexType>
+					<sequence>
+						<element name="getDetailsReturn" type="impl:ResponseClass" />
+					</sequence>
+				</complexType>
+			</element>
+			<complexType name="ResponseClass">
+				<sequence>
+					<element name="message" nillable="true" type="xsd:string" />
+					<element name="id" nillable="true" type="xsd:int" />
+				</sequence>
+			</complexType>
+		</schema>
+	</wsdl:types>
+
+	<wsdl:message name="getDetailsResponse">
+
+		<wsdl:part element="impl:getDetailsResponse" name="parameters">
+
+		</wsdl:part>
+
+	</wsdl:message>
+
+	<wsdl:message name="getDetailsRequest">
+
+		<wsdl:part element="impl:getDetails" name="getDetails">
+		</wsdl:part>
+		<wsdl:part element="impl:getDetailsHeader" name="InputHeader">
+
+		</wsdl:part>
+
+	</wsdl:message>
+
+	<wsdl:portType name="SoapMainService">
+	
+	<jaxws:bindings xmlns:jaxws="http://java.sun.com/xml/ns/jaxws"> 
+	<jaxws:enableWrapperStyle>false</jaxws:enableWrapperStyle> 
+	</jaxws:bindings>
+
+		<wsdl:operation name="getDetails">
+
+			<wsdl:input message="impl:getDetailsRequest" name="getDetailsRequest">
+
+			</wsdl:input>
+
+			<wsdl:output message="impl:getDetailsResponse" name="getDetailsResponse">
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+	</wsdl:portType>
+
+	<wsdl:binding name="SoapMainServiceSoapBinding" type="impl:SoapMainService">
+
+		<wsdlsoap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+
+		<wsdl:operation name="getDetails">
+
+			<wsdlsoap:operation soapAction="" />
+
+			<wsdl:input name="getDetailsRequest">
+
+				<wsdlsoap:body parts="getDetails" use="literal" />
+				<wsdlsoap:header message="impl:getDetailsRequest"
+					use="literal" part="InputHeader" />
+			</wsdl:input>
+
+			<wsdl:output name="getDetailsResponse">
+
+				<wsdlsoap:body use="literal" />
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+	</wsdl:binding>
+
+	<wsdl:service name="SoapMainServiceService">
+
+		<wsdl:port binding="impl:SoapMainServiceSoapBinding" name="SoapMainService">
+
+			<wsdlsoap:address
+				location="http://localhost:8080/asmpleSoap/services/SoapMainService" />
+
+		</wsdl:port>
+
+	</wsdl:service>
+
+</wsdl:definitions>
