@@ -1,4 +1,3 @@
-# muleproject
 How to Consume SOAP service with multi-part(message contains multiple parts) WSDL using Mule ESB.
 Componants used:
 1.CXF as JAX-WS client
@@ -12,4 +11,8 @@ Whenever you try consuming servi ces with multi-part messages , webservice consu
 When you drag and drop DW componant it senses either SOAP Body or Other parts, which makes it difficult for developers to  perform transformations.
 Step 1: Generate JaxB Objects corrosponds to given service WSDL.
 Before generating JAXB objects we need to make below change to WSDL.
+Find the PortType for your interface and place below binding statement in your wsdl.
+<jaxws:bindings xmlns:jaxws="http://java.sun.com/xml/ns/jaxws">         <jaxws:enableWrapperStyle>false</jaxws:enableWrapperStyle>
+</jaxws:bindings>
+
 
