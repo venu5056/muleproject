@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+    <http:listener-config name="HTTP_Listener_Configuration" protocol="HTTPS" host="0.0.0.0" port="8975" doc:name="HTTP Listener Configuration" tlsContext-ref="customContext">
+    </http:listener-config>
+    
+    <tls:context name="customContext" doc:name="TLS Context">
+    
+    <tls:key-store path="mykeystore.jks" keyPassword="mule123"
+password="mulepassword"/>
+ </tls:context>
+    <flow name="httpsflowFlow">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/" doc:name="HTTP"/>
+        <logger message="Payload is #[payload]" level="INFO" doc:name="Logger"/>
+        <dw:transform-message doc:name="Transform Message" metadata:id="2dc5ed0a-3a8d-410d-ae26-447d63e3bc45">
+            <dw:input-payload doc:sample="C:\Users\veananth\Desktop\Json Values.json" mimeType="application/json"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+%var key = payload.*key distinctBy $
+---
+{
+	(key map ((key1,index) -> {
+		key :key1,
+		keyChild: {
+		(payload filter $.key == key1 map ((val,indexOfVal) -> {
+		keyChildChild:{
+			name : val.name,
+			gender: val.gender
+		}	
+			
+		}))}
+	}))
+}]]></dw:set-payload>
+        </dw:transform-message>
+    </flow>
+</mule>
